@@ -36,17 +36,6 @@
     </ol>
 </div>
 <script>
-    // alert('Witamy witamy');
-    // console.log('Witamy w konsoli');
-
-    // ODNAJDYWANIE ELEMENTÓW
-    // const header = document.getElementById('main-header');
-    // alert(header.innerText);
-    // const nudy = document.querySelectorAll("#app .boring");
-    // nudy.forEach(element => {
-    //     alert(`Nuda: ${element.innerText}`);
-    //     element.classList.remove('boring');
-    // });
 
     // TWORZENIE NOWYCH ELEMENTÓW
     let div = document.createElement('div');
@@ -58,21 +47,6 @@
     listItem.innerText = 'Zagrać';
     // dodaję na koniec listy
     document.querySelector("#app ol li:last-child").after(listItem); // jest też before
-
-    // USUWANIE ELEMENTÓW
-    // document.querySelectorAll("#app .boring").forEach((e) => e.remove());
-
-    // ZARZĄRZANIE KLASAMI
-    // div.classList.remove("foo");
-    // div.classList.add("anotherclass");
-    //
-    // // jeśli ustawiona jest widoczność usuwa ją, w przeciwnym wypadku dodaje
-    // div.classList.toggle("visible");
-    //
-    // // dodaj/usuń (add/remove) jest widoczne, w zależności od warunku testowego, i mniejsze od 10
-    // div.classList.toggle("visible", i < 10 );
-    //
-    // alert(div.classList.contains("foo"));
 
     function removeBoringStuff() {
         document.querySelectorAll("#app .boring").forEach((element) => element.remove());
