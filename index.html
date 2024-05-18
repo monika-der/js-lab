@@ -33,6 +33,14 @@
                 <button type="button" onclick="readValues()">Odczytaj wartości</button>
             </p>
         </div>
+        <div id="clickable-area" style="width: 200px; height: 200px; background-color: grey;"></div>
+        <button id="start-btn">Start</button>
+        <button id="stop-btn" style="display:none;">Stop</button>
+        <div id="stats-panel" style="display:none;">
+            <p>Shortest Reaction: <span id="shortest-reaction">-</span> ms</p>
+            <p>Longest Reaction: <span id="longest-reaction">-</span> ms</p>
+            <p>Average Reaction: <span id="average-reaction">-</span> ms</p>
+        </div>
         <script>
 
             // TWORZENIE NOWYCH ELEMENTÓW
@@ -56,6 +64,70 @@
                 if (checkbox.checked) {
                     alert(`Pole tekstowe: ${textField.value}, checkbox zaznaczony`);
                 }
+            }
+
+            // GRA
+            let startTime, endTime;
+            let reactionTimes = [];
+            let gameInterval;
+            const clickableArea = document.getElementById('clickable-area');
+            const startBtn = document.getElementById('start-btn');
+            const stopBtn = document.getElementById('stop-btn');
+            const statsPanel = document.getElementById('stats-panel');
+            const shortestReaction = document.getElementById('shortest-reaction');
+            const longestReaction = document.getElementById('longest-reaction');
+            const averageReaction = document.getElementById('average-reaction');
+
+            startBtn.addEventListener('click', startGame);
+            stopBtn.addEventListener('click', stopGame);
+            clickableArea.addEventListener('click', recordReactionTime);
+
+            function startGame() {
+                startBtn.style.display = 'none';
+                stopBtn.style.display = 'inline';
+                statsPanel.style.display = 'none';
+                reactionTimes = [];
+                nextColorChange();
+            }
+
+            function stopGame() {
+                clearInterval(gameInterval);
+                startBtn.style.display = 'inline';
+                stopBtn.style.display = 'none';
+                updateStats();
+                statsPanel.style.display = 'block';
+            }
+
+            function nextColorChange() {
+                let randomTime = Math.random() * 2000 + 1000; // 1 to 3 seconds
+                gameInterval = setTimeout(changeColor, randomTime);
+            }
+
+            function changeColor() {
+                clickableArea.style.backgroundColor = `rgb(${Math.random()*255}, ${Math.random()*255}, ${Math.random()*255})`;
+                startTime = new Date();
+            }
+
+            function recordReactionTime() {
+                if (!startTime) return; // Ignore if the game hasn't started
+                endTime = new Date();
+                let reactionTime = endTime - startTime;
+                reactionTimes.push(reactionTime);
+                updateStats();
+                if (reactionTimes.length < 5) {
+                    nextColorChange();
+                } else {
+                    stopGame();
+                }
+            }
+
+            function updateStats() {
+                let shortest = Math.min(...reactionTimes);
+                let longest = Math.max(...reactionTimes);
+                let average = reactionTimes.reduce((a, b) => a + b, 0) / reactionTimes.length;
+                shortestReaction.textContent = shortest ? `${shortest} ms` : '-';
+                longestReaction.textContent = longest ? `${longest} ms` : '-';
+                averageReaction.textContent = average ? `${average.toFixed(2)} ms` : '-';
             }
 
         </script>
